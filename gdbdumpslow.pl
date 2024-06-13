@@ -36,7 +36,7 @@ $/ = "";		# read entire statements using paragraph mode
 while ( defined($_ = <>) ) {
     warn "[[$_]]\n" if $opt{d};	# show raw paragraph being read
 
-    my ($port,$host,$user,$t,$sql,$p,$g,$f) = s/.*Port\[(\d+)\]Session\[\d*\]TransSerial\[\d*\]LinkIP\[(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\]LinkPort\[\d+\]UserName\[(\S+)\]ProxyName\[\S+\]ClusterName\[\S+\]Database\[\S+\]TotalExecTime\[(\d+)us\]BeginTs\[\S+\]EndTs\[\S+\]SQL\[(.*)\]\ndigest\[\S+\]\nMsgToExecTime\[\S+\]ParserSQLTime\[(\d+)us,\S+\]PlanTreeCreateTime\[\S+\]GetGTIDTime\[(\d+)us,\S+\]GetAutoIncValueTime\[\S*\]FreeGtidTime\[(\d*)us,\S+\]PlanTreeExecTime\[\S+\].*//s ? ($1,$2,$3,$4,$5,$6,$7,$8) : ('','','','','','','','');
+    my ($port,$host,$user,$t,$sql,$p,$g,$f) = s/.*Port\[(\d+)\]Session\[\d*\]TransSerial\[\d*\]LinkIP\[(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\]LinkPort\[\d+\]UserName\[(\S+)\]ProxyName\[\S+\]ClusterName\[\S+\]Database\[\S*\]TotalExecTime\[(\d+)us\]BeginTs\[\S+\]EndTs\[\S+\]SQL\[(.*)\]\ndigest\[\S+\]\nMsgToExecTime\[\S+\]ParserSQLTime\[(\d+)us,\S+\]PlanTreeCreateTime\[\S+\]GetGTIDTime\[(\d+)us,\S+\]GetAutoIncValueTime\[\S*\]FreeGtidTime\[(\d*)us,\S+\]PlanTreeExecTime\[\S+\].*//s ? ($1,$2,$3,$4,$5,$6,$7,$8) : ('','','','','','','','');
     warn "{{$sql}}\n\n" if $opt{d};	# show processed statement string
 
 
