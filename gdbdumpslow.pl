@@ -30,8 +30,8 @@ unless (@ARGV) {
 }
 
 
-my $whole_file = do {local $/; <> };
 warn "\nReading slow query log from @ARGV\n";
+my $whole_file = do {local $/; <> };
 
 my $entry_separator = '(?m)(?=^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}:\d{3}\])';
 my @entries = split /$entry_separator/,$whole_file;
@@ -40,7 +40,7 @@ my %stmt;
 foreach (@entries) {
     warn "[[$_]]\n" if $opt{d}; # show raw paragraph being read
 
-    my ($port,$host,$user,$t,$sql,$p,$g,$f) = s/.*Port\[(\d+)\]Session\[\d*\]TransSerial\[\d*\]LinkIP\[(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\]LinkPort\[\d+\]UserName\[(\S+)\]ProxyName\[\S+\]ClusterName\[\S+\]Database\[\S+\]TotalExecTime\[(\d+)us\]BeginTs\[\S+\]EndTs\[\S+\]SQL\[(.*)\]\ndigest\[\S+\]\nMsgToExecTime\[\S+\]ParserSQLTime\[(\d+)us,\S+\]PlanTreeCreateTime\[\S+\]GetGTIDTime\[(\d+)us,\S+\]GetAutoIncValueTime\[\S*\]FreeGtidTime\[(\d*)us,\S+\]PlanTreeExecTime\[\S+\].*//s ? ($1,$2,$3,$4,$5,$6,$7,$8) : ('','','','','','','','');
+    my ($port,$host,$user,$t,$sql,$p,$g,$f) = s/.*Port\[(\d+)\]Session\[\d*\]TransSerial\[\d*\]LinkIP\[(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\]LinkPort\[\d+\]UserName\[(\S+)\]ProxyName\[\S+\]ClusterName\[\S+\]Database\[\S*\]TotalExecTime\[(\d+)us\]BeginTs\[\S+\]EndTs\[\S+\]SQL\[(.*?)\]\n(?:digest\[\S+\]\n)?MsgToExecTime\[\S+\]ParserSQLTime\[(\d+)us,\S+\]PlanTreeCreateTime\[\S+\]GetGTIDTime\[(\d+)us,\S+\]GetAutoIncValueTime\[\S*\]FreeGtidTime\[(\d*)us,\S+\]PlanTreeExecTime\[\S+\].*//s ? ($1,$2,$3,$4,$5,$6,$7,$8) : ('','','','','','','','');
     warn "{{$sql}}\n\n" if $opt{d}; # show processed statement string
 
 
